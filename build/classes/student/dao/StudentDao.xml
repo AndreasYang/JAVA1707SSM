@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="student.dao.StudentDao">
+   
+   <!-- 查找所有学生信息 -->
+   <resultMap type="Student" id="studentInfosssMap">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="age" column="age"/>
+		<result property="gender" column="gender"/>
+		<result property="address" column="address"/>
+		<association property="banji" javaType="Banji">
+			<id property="id" column="banji_id"/>
+			<result property="classname" column="classname"/>
+		</association>
+   </resultMap>
+    <select id="findAll" resultMap="studentInfosssMap">
+       SELECT s.id,s.name,s.age,s.gender,s.address,bj.id AS banji_id,bj.classname 
+	   FROM student AS s INNER JOIN banji AS bj 
+	   ON s.banji_id=bj.id ORDER BY s.id;
+    </select>
+    
+    <!-- 根据id删除学生 -->
+    <delete id="deleteStudentById" parameterType="int">
+    	delete from student where id=#{id}
+    </delete>
+    
+    <!-- 根据id查找到需要更新信息的学生 -->
+    <select id="findStudentBuId" parameterType="int" resultType="Student">
+    	select * from student where id=#{id}
+    </select>
+    
+    <!-- 更新学生信息 -->
+    <update id="updateStudent" parameterType="Student">
+    	UPDATE student 
+    	<set>
+    		<if test="number != null">
+    			number=#{number},
+    		</if>
+    		<if test="name != null">
+    			name=#{name},
+    		</if>
+    		<if test="age != null">
+    			age=#{age},
+    		</if>
+    		<if test="gender != null">
+    			gender=#{gender},
+    		</if>
+    		<if test="address != null">
+    			address=#{address},
+    		</if>
+    		<if test="banjiId != null">
+    			banji_id=#{banjiId},
+    		</if>
+    	</set>
+    	WHERE id=#{id}
+    </update>
+    
+    <!-- 添加学生信息 -->
+    <insert id="addStudent" parameterType="Student">
+    	INSERT INTO student(NAME,gender,age,number,address,banji_id) VALUES(#{name},#{gender},#{age},#{number},#{address},#{banjiId})
+    </insert>
+    
+    <!-- 根据条件查询学生信息 -->
+    <select id="searchStudent" parameterType="Student" resultMap="studentInfosssMap">
+    	SELECT s.id,s.name,s.age,s.gender,s.address,bj.id AS banji_id,bj.classname 
+	   	FROM student AS s INNER JOIN banji AS bj 
+	  	ON s.banji_id=bj.id
+    	<where>
+    		<if test="name!=null and !&quot;&quot;.equals(name.trim())">
+    			and s.name like '%${name}%'
+    		</if>
+    		<if test="age!=null">
+    			and s.age=#{age}
+    		</if>
+    		<if test="gender!=null and !&quot;&quot;.equals(gender.trim())">
+    			and s.gender=#{gender}
+    		</if>
+    	</where>
+    </select>
+    
+    <!-- 得到学生信息总数 -->
+    <select id="getToutalCount" resultType="int">
+    	SELECT COUNT(*) FROM student
+    </select>
+    
+    <!-- 学生信息分页 -->
+    <select id="findPageBeanList" resultMap="studentInfosssMap">
+       SELECT s.id,s.name,s.age,s.gender,s.address,bj.id AS banji_id,bj.classname 
+	   FROM student AS s INNER JOIN banji AS bj 
+	   ON s.banji_id=bj.id ORDER BY s.id limit #{index},#{pageSizeStr};
+    </select>
+</mapper>

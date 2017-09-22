@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="student.dao.BanjiDao">
+
+	<!-- 所有班级 -->
+	<select id="findAllBanji" resultType="Banji">
+		select * from banji
+	</select>
+	
+	<!-- 删除班级 -->
+	<delete id="deleteBanji" parameterType="int">
+		delete from banji where id=#{id}	
+	</delete>
+	
+	<!-- 添加班级 -->
+	<insert id="addBanji" parameterType="Banji">
+		INSERT INTO banji(classname) VALUES(#{classname})
+	</insert>
+	
+	
+	<!-- 查找所有班级信息（包括课程） -->
+	<resultMap type="BanjiCourse" id="banjicourseInfosMap">
+		<id property="banjicourseId" column="bcId"/>
+		<association property="banji" javaType="Banji">
+			<id property="classname" column="classname"/>
+		</association>
+		<association property="course" javaType="Course">
+			<id property="coursename" column="coursename"/>
+			<result property="points" column="points"/>
+		</association>
+	</resultMap>
+	<select id="findAllBanjiCourse" resultMap="banjicourseInfosMap">
+		SELECT bc.id AS bcId,bj.classname,c.coursename,c.points 
+		FROM banji AS bj INNER JOIN banji_course AS bc ON bj.id=bc.banji_id 
+		INNER JOIN course AS c ON bc.course_id=c.id ORDER BY bj.classname;
+	</select>
+	
+	<!-- 删除班级课程信息 -->
+	<delete id="deleteBanjiCourse" parameterType="int">
+		delete from banji_course where id=#{id}
+	</delete>
+	
+	<!-- 添加班级课程信息 -->
+	<insert id="addBanjiCourse" >
+		INSERT INTO banji_course(banji_id,course_id) VALUES(#{banjiId},#{courseId})
+	</insert>
+	
+</mapper>

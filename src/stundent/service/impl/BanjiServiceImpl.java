@@ -46,6 +46,11 @@ public class BanjiServiceImpl implements IBanjiService{
 	public void addBanjiCourse(int banjiId, int courseId) {
 		banjiDao.addBanjiCourse(banjiId, courseId);
 	}
+
+	@Override
+	public List<BanjiCourse> searchBanjiCourse(String classname) {
+		return banjiDao.searchBanjiCourse(classname);
+	}
 	
 	
 }

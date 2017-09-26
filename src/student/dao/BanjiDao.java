@@ -21,4 +21,6 @@ public interface BanjiDao {
 
 	void addBanjiCourse(@Param(value="banjiId")int banjiId, @Param(value="courseId")int courseId);
 
+	List<BanjiCourse> searchBanjiCourse(String classname);
+
 }

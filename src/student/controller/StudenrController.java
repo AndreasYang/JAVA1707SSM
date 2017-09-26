@@ -38,7 +38,7 @@ public class StudenrController {
     @RequestMapping(value="/deleteStudent")
     public String deleteStudent(int id){
     	studentService.deleteStudentById(id);
-    	return "redirect:/student/list.action";
+    	return "redirect:/student/pageList.action";
     }
     
     //根据id查找需要更新的学生
@@ -57,14 +57,14 @@ public class StudenrController {
     public String updateStudent(Student student){
     	//System.out.println(student);
     	studentService.updateStudent(student);
-    	return "redirect:/student/list.action";
+    	return "redirect:/student/pageList.action";
     } 
     
     //添加学生信息
     @RequestMapping(value="/addStudent")
     public String addStudent(Student student){
     	studentService.addStudent(student);
-    	return "redirect:/student/list.action";
+    	return "redirect:/student/pageList.action";
     }
     
     //根据条件查找学生信息
@@ -92,6 +92,7 @@ public class StudenrController {
 		}
 		
 		PageBean pageBean = studentService.getPageBean(pageIndexStr, pageSizeStr);
+		System.out.println(pageBean);
 		model.addAttribute("pageBean", pageBean);
        return "student_list";
      }

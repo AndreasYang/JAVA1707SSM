@@ -47,4 +47,11 @@
 		INSERT INTO banji_course(banji_id,course_id) VALUES(#{banjiId},#{courseId})
 	</insert>
 	
+	<!-- 搜索班级课程信息 -->
+	<select id="searchBanjiCourse" parameterType="String" resultMap="banjicourseInfosMap">
+		SELECT bc.id AS bcId,bj.classname,c.coursename,c.points 
+		FROM banji AS bj INNER JOIN banji_course AS bc ON bj.id=bc.banji_id 
+		INNER JOIN course AS c ON bc.course_id=c.id WHERE bj.classname = #{classname};
+	</select>
+	
 </mapper>

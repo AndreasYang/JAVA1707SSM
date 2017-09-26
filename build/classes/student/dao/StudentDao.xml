@@ -7,6 +7,7 @@
    <!-- 查找所有学生信息 -->
    <resultMap type="Student" id="studentInfosssMap">
 		<id property="id" column="id"/>
+		<result property="number" column="number"/>
 		<result property="name" column="name"/>
 		<result property="age" column="age"/>
 		<result property="gender" column="gender"/>
@@ -88,7 +89,7 @@
     
     <!-- 学生信息分页 -->
     <select id="findPageBeanList" resultMap="studentInfosssMap">
-       SELECT s.id,s.name,s.age,s.gender,s.address,bj.id AS banji_id,bj.classname 
+       SELECT s.id,s.number,s.name,s.age,s.gender,s.address,bj.id AS banji_id,bj.classname 
 	   FROM student AS s INNER JOIN banji AS bj 
 	   ON s.banji_id=bj.id ORDER BY s.id limit #{index},#{pageSizeStr};
     </select>

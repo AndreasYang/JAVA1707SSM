@@ -70,6 +70,14 @@ public class BanjiController {
 		return "redirect:/banji/banjicourselist.action";
 	}
 	
+	//搜索班级课程信息
+	@RequestMapping(value="searchBanjiCourse")
+	public String searchBanjiCourse(String classname, Model model){
+		List<BanjiCourse> banjiCourselist = banjiService.searchBanjiCourse(classname);
+		model.addAttribute("banjiCourselist", banjiCourselist);
+		return "banji_course_search";
+	}
+	
 	//以下是控制页面跳转
 	@RequestMapping(value="/getAddBanjiPage")
 	public String getAddBanjiPage(){
@@ -83,6 +91,11 @@ public class BanjiController {
 		model.addAttribute("banjilist", banjilist);
 		model.addAttribute("courselist", courselist);
 		return "banji_course_add";
+	}
+	
+	@RequestMapping(value="/getSearchBanjiCoursePage")
+	public String getSearchBanjiCoursePage(){
+		return "banji_course_search";
 	}
 	
 	

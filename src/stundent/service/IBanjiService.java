@@ -19,4 +19,6 @@ public interface IBanjiService {
 
 	void addBanjiCourse(int banjiId, int courseId);
 
+	List<BanjiCourse> searchBanjiCourse(String classname);
+
 }
